@@ -8,6 +8,7 @@ import com.ll.wiseSaying.domain.WiseSaying;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
 // 데이터의 조회, 생성, 수정, 삭제를 담당
 public class WiseSayingRepository {
     private final String DB_FOLDER = "src/main/resources/db/wiseSaying";
@@ -104,6 +105,33 @@ public class WiseSayingRepository {
             gson.toJson(wiseSayings, writer);
         } catch (IOException e) {
             System.out.println("data.json 파일 생성 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 데이터 초기화 메서드 추가
+    public void clearData() {
+        File folder = new File(DB_FOLDER);
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (!file.getName().equals("lastId.txt") && !file.getName().equals("data.json")) {
+                        file.delete();
+                    }
+                }
+            }
+        }
+        // lastId.txt와 data.json 초기화
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LAST_ID_FILE))) {
+            writer.write("0");
+        } catch (IOException e) {
+            System.out.println("lastId.txt 초기화 중 오류가 발생했습니다.");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(DATA_FILE))) {
+            writer.write("[]");
+        } catch (IOException e) {
+            System.out.println("data.json 초기화 중 오류가 발생했습니다.");
         }
     }
 }

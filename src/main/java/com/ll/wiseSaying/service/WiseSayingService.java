@@ -38,4 +38,7 @@ public class WiseSayingService {
     public void buildDataJson() {
         repository.buildDataJson();
     }
+    public void clearData() {
+        repository.clearData();
+    }
 }

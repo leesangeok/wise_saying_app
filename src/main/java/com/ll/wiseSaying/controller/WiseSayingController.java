@@ -67,4 +67,7 @@ public class WiseSayingController {
             System.out.println("알 수 없는 명령입니다. 사용 가능한 명령: 등록, 목록, 삭제, 수정, 빌드, 종료");
         }
     }
+    public void clearData() {
+        service.clearData();
+    }
 }

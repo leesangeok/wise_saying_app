@@ -1,35 +1,10 @@
 package com.ll.wiseSaying;
-import com.ll.wiseSaying.controller.WiseSayingController;
-import java.util.Scanner;
 
- // 애플리케이션 진입점
+// 애플리케이션 진입점
 public class Main {
     public static void main(String[] args) {
         App app = new App();
         app.run();
-    }
-}
-
-// 사용자 입력처리
-class App {
-    private final WiseSayingController controller = new WiseSayingController();
-
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("== 명언 앱 ==");
-
-        while (true) {
-            System.out.print("명령) ");
-            String cmd = scanner.nextLine().trim();
-
-            if (cmd.equals("종료")) {
-                break;
-            }
-
-            controller.handleCommand(cmd, scanner);
-        }
-
-        scanner.close();
     }
 }
 
