@@ -11,12 +11,14 @@ public class WiseSayingControllerTest {
     @BeforeEach
     void beforeEach() {
         // 각 테스트 시작 전에 데이터 초기화
+        System.out.println("=== 테스트 초기화 ===");
         AppTest.clear();
     }
 
     @Test
     @DisplayName("등록 명령어 테스트")
     void testRegisterCommand() {
+        System.out.println("\n=== 등록 명령어 테스트 시작 ===");
         String input = """
                 등록
                 현재를 사랑하라.
@@ -24,7 +26,13 @@ public class WiseSayingControllerTest {
                 종료
                 """;
 
+        System.out.println("입력값:");
+        System.out.println(input);
+
         String output = AppTest.run(input);
+
+        System.out.println("출력값:");
+        System.out.println(output);
 
         assertThat(output)
                 .contains("명언 :")
@@ -35,6 +43,7 @@ public class WiseSayingControllerTest {
     @Test
     @DisplayName("목록 명령어 테스트")
     void testListCommand() {
+        System.out.println("\n=== 목록 명령어 테스트 시작 ===");
         String input = """
                 등록
                 현재를 사랑하라.
@@ -46,7 +55,13 @@ public class WiseSayingControllerTest {
                 종료
                 """;
 
+        System.out.println("입력값:");
+        System.out.println(input);
+
         String output = AppTest.run(input);
+
+        System.out.println("출력값:");
+        System.out.println(output);
 
         assertThat(output)
                 .contains("1 / 작자미상 / 현재를 사랑하라.")
@@ -56,6 +71,7 @@ public class WiseSayingControllerTest {
     @Test
     @DisplayName("삭제 명령어 테스트")
     void testDeleteCommand() {
+        System.out.println("\n=== 삭제 명령어 테스트 시작 ===");
         String input = """
                 등록
                 현재를 사랑하라.
@@ -65,7 +81,13 @@ public class WiseSayingControllerTest {
                 종료
                 """;
 
+        System.out.println("입력값:");
+        System.out.println(input);
+
         String output = AppTest.run(input);
+
+        System.out.println("출력값:");
+        System.out.println(output);
 
         assertThat(output)
                 .contains("1번 명언이 삭제되었습니다.");
@@ -74,6 +96,7 @@ public class WiseSayingControllerTest {
     @Test
     @DisplayName("수정 명령어 테스트")
     void testUpdateCommand() {
+        System.out.println("\n=== 수정 명령어 테스트 시작 ===");
         String input = """
                 등록
                 현재를 사랑하라.
@@ -85,9 +108,41 @@ public class WiseSayingControllerTest {
                 종료
                 """;
 
+        System.out.println("입력값:");
+        System.out.println(input);
+
         String output = AppTest.run(input);
+
+        System.out.println("출력값:");
+        System.out.println(output);
 
         assertThat(output)
                 .contains("1번 명언이 수정되었습니다.");
+    }
+
+    @Test
+    @DisplayName("목록? 올바른 명령어 테스트")
+    void testValidSearchCommand() {
+        System.out.println("\n=== 목록? 명령어 테스트 시작 ===");
+        String input = """
+                등록
+                과거를 기억하라.
+                홍길동
+                목록?keywordType=author&keyword=홍길동
+                종료
+                """;
+
+        System.out.println("입력값:");
+        System.out.println(input);
+
+        String output = AppTest.run(input);
+
+        System.out.println("출력값:");
+        System.out.println(output);
+
+        assertThat(output)
+                .contains("검색타입 : author")
+                .contains("검색어 : 홍길동")
+                .contains("1 / 홍길동 / 과거를 기억하라.");
     }
 }

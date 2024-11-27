@@ -63,7 +63,34 @@ public class WiseSayingController {
         } else if (cmd.equals("빌드")) {
             service.buildDataJson();
             System.out.println("data.json 파일이 생성되었습니다.");
-        } else {
+        } else if (cmd.equals("목록?")) { // 검색 명령 기본 입력 처리
+            System.out.print("검색할 타입을 입력하세요 (예: author, content):");
+            String keywordType = scanner.nextLine().trim();
+
+            System.out.print("keyword: ");
+            String keyword = scanner.nextLine().trim();
+
+            System.out.println("----------------------");
+            System.out.println("검색타입 : " + keywordType);
+            System.out.println("검색어 : " + keyword);
+            System.out.println("----------------------");
+
+            // 검색 실행
+            List<WiseSaying> filteredSayings = service.search(keywordType, keyword);
+
+            // 결과 출력
+            if (filteredSayings.isEmpty()) {
+                System.out.println("검색 결과가 없습니다.");
+            } else {
+                System.out.println("번호 / 작가 / 명언");
+                System.out.println("----------------------");
+                for (WiseSaying wiseSaying : filteredSayings) {
+                    System.out.println(wiseSaying.getId() + " / " + wiseSaying.getAuthor() + " / " + wiseSaying.getContent());
+                }
+            }
+        }
+
+        else {
             System.out.println("알 수 없는 명령입니다. 사용 가능한 명령: 등록, 목록, 삭제, 수정, 빌드, 종료");
         }
     }

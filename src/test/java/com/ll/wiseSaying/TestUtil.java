@@ -1,7 +1,9 @@
 package com.ll.wiseSaying;
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 public class TestUtil {
     // 테스트용 InputStream 생성
@@ -20,13 +22,11 @@ public class TestUtil {
     public static void restoreSystemInputOutput(InputStream originalIn, PrintStream originalOut) {
         System.setIn(originalIn);
         System.setOut(originalOut);
-        // PrintStream.close()는 IOException을 던지지 않으므로 try-catch 제거
         originalOut.close();
     }
 
     // 테스트 전 데이터 초기화 (필요 시)
     public static void clear() {
-        // 데이터 초기화 메서드를 호출합니다.
         AppTest.clear();
     }
 }

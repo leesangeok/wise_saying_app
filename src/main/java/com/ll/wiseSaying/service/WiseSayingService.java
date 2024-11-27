@@ -3,6 +3,7 @@ package com.ll.wiseSaying.service;
 import com.ll.wiseSaying.domain.WiseSaying;
 import com.ll.wiseSaying.repository.WiseSayingRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // 순수 비즈니스 로직을 처리
@@ -40,5 +41,21 @@ public class WiseSayingService {
     }
     public void clearData() {
         repository.clearData();
+    }
+
+
+    public List<WiseSaying> search(String keywordType, String keyword) {
+        List<WiseSaying> allSayings = repository.findAll();
+        List<WiseSaying> filteredSayings = new ArrayList<>();
+
+        for (WiseSaying wiseSaying : allSayings) {
+            if (keywordType.equals("author") && wiseSaying.getAuthor().contains(keyword)) {
+                filteredSayings.add(wiseSaying);
+            } else if (keywordType.equals("content") && wiseSaying.getContent().contains(keyword)) {
+                filteredSayings.add(wiseSaying);
+            }
+        }
+
+        return filteredSayings;
     }
 }
