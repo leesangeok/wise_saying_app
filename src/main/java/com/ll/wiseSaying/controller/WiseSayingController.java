@@ -5,9 +5,11 @@ import com.ll.wiseSaying.service.WiseSayingService;
 
 import java.util.List;
 import java.util.Scanner;
+
 // 사용자의 명령을 처리하고 적절한 응답을 표현
 public class WiseSayingController {
     private final WiseSayingService service = new WiseSayingService();
+    private static final int PAGE_SIZE = 5; // 한 페이지에 표시할 명언의 수
 
     public void handleCommand(String cmd, Scanner scanner) {
         if (cmd.equals("등록")) {
@@ -20,8 +22,9 @@ public class WiseSayingController {
             WiseSaying wiseSaying = service.write(content, author);
             System.out.println(wiseSaying.getId() + "번 명언이 등록되었습니다.");
         } else if (cmd.equals("목록")) {
-            System.out.println("== 명언 목록 ==");
-            List<WiseSaying> wiseSayings = service.findAll();
+            // 1페이지, 검색어 없이
+            System.out.println("== 명언 목록 (1페이지) ==");
+            List<WiseSaying> wiseSayings = service.findAll("", 1, PAGE_SIZE); // 검색어 없이 1페이지에 5개만
 
             if (wiseSayings.isEmpty()) {
                 System.out.println("등록된 명언이 없습니다.");
@@ -31,6 +34,9 @@ public class WiseSayingController {
             for (WiseSaying wiseSaying : wiseSayings) {
                 System.out.println(wiseSaying.getId() + " / " + wiseSaying.getAuthor() + " / " + wiseSaying.getContent());
             }
+
+            // 페이징 정보 출력
+            System.out.println("페이지 : [1]"); // 현재 페이지는 1페이지
         } else if (cmd.equals("삭제")) {
             System.out.print("삭제할 명언 번호 : ");
             int id = Integer.parseInt(scanner.nextLine());
@@ -63,37 +69,33 @@ public class WiseSayingController {
         } else if (cmd.equals("빌드")) {
             service.buildDataJson();
             System.out.println("data.json 파일이 생성되었습니다.");
-        } else if (cmd.equals("목록?")) { // 검색 명령 기본 입력 처리
-            System.out.print("검색할 타입을 입력하세요 (예: author, content):");
-            String keywordType = scanner.nextLine().trim();
+        } else if (cmd.equals("목록?")) {
+            // 검색어와 페이지를 반영한 목록 출력
+            System.out.print("검색어 (없으면 엔터): ");
+            String searchQuery = scanner.nextLine();
 
-            System.out.print("keyword: ");
-            String keyword = scanner.nextLine().trim();
+            System.out.print("페이지 번호 (기본 1): ");
+            String pageInput = scanner.nextLine();
+            int page = pageInput.isEmpty() ? 1 : Integer.parseInt(pageInput);
 
-            System.out.println("----------------------");
-            System.out.println("검색타입 : " + keywordType);
-            System.out.println("검색어 : " + keyword);
-            System.out.println("----------------------");
+            int totalCount = service.getTotalCount(searchQuery);
+            int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
 
-            // 검색 실행
-            List<WiseSaying> filteredSayings = service.search(keywordType, keyword);
+            List<WiseSaying> wiseSayings = service.findAll(searchQuery, page, PAGE_SIZE);
 
-            // 결과 출력
-            if (filteredSayings.isEmpty()) {
-                System.out.println("검색 결과가 없습니다.");
-            } else {
-                System.out.println("번호 / 작가 / 명언");
-                System.out.println("----------------------");
-                for (WiseSaying wiseSaying : filteredSayings) {
-                    System.out.println(wiseSaying.getId() + " / " + wiseSaying.getAuthor() + " / " + wiseSaying.getContent());
-                }
+            if (wiseSayings.isEmpty()) {
+                System.out.println("검색된 명언이 없습니다.");
+                return;
             }
-        }
 
-        else {
-            System.out.println("알 수 없는 명령입니다. 사용 가능한 명령: 등록, 목록, 삭제, 수정, 빌드, 종료");
+            for (WiseSaying wiseSaying : wiseSayings) {
+                System.out.println(wiseSaying.getId() + " / " + wiseSaying.getAuthor() + " / " + wiseSaying.getContent());
+            }
+
+            System.out.println("페이지 : [" + page + "] / " + totalPages);
         }
     }
+
     public void clearData() {
         service.clearData();
     }

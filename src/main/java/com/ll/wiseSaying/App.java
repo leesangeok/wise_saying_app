@@ -30,9 +30,9 @@ public class App {
         Scanner scanner = (testScanner != null) ? testScanner : new Scanner(System.in);
 
         // 테스트 모드일 때 데이터 초기화
-        if (testScanner != null) {
-            controller.clearData();
-        }
+//        if (testScanner != null) {
+//            controller.clearData();
+//        }
 
         System.out.println("== 명언 앱 ==");
 

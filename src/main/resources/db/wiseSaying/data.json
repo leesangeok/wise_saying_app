@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "id": 1,
+    "content": "과거를 기억하라.",
+    "author": "홍길동"
+  },
+  {
+    "id": 2,
+    "content": "목록",
+    "author": "ㅋㅋ"
+  },
+  {
+    "id": 3,
+    "content": "ㅋㅋ",
+    "author": "ㅋㅋ"
+  },
+  {
+    "id": 4,
+    "content": "목록",
+    "author": "목록"
+  },
+  {
+    "id": 5,
+    "content": "이상억",
+    "author": "이상억"
+  }
+]
